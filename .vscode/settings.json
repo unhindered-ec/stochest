@@ -1,0 +1,47 @@
+{
+    "cSpell.words": [
+        "Bitstring",
+        "Bitstrings",
+        "Clojush",
+        "Conv",
+        "Dataless",
+        "esitsu",
+        "GECCO",
+        "Goues",
+        "Helmuth",
+        "hiff",
+        "lexicase",
+        "Mizard",
+        "proptest",
+        "Pysh",
+        "recombinate",
+        "Recombinator",
+        "recombinators",
+        "rngs",
+        "Scorable",
+        "scottmcm's",
+        "Spector",
+        "thiserror",
+        "typestate",
+        "UMAD",
+        "underflowed",
+        "underflows",
+        "Wrappable"
+    ],
+    "todo-tree.tree.showCountsInTree": true,
+    "rust-analyzer.rustfmt.overrideCommand": [
+        "rustfmt-unstable",
+        "--",
+        "rustfmt",
+        "--edition",
+        "2021"
+    ],
+    "rust-analyzer.check.overrideCommand": [
+        "cargo",
+        "+nightly",
+        "clippy",
+        "--all-targets",
+        "--workspace",
+        "--message-format=json-diagnostic-rendered-ansi"
+    ],
+}

@@ -1,0 +1,41 @@
+name: Cargo Build & Test
+
+on:
+  push:
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -Dwarnings
+
+jobs:
+  build_and_test:
+    name: unhindered-ec - stochest - latest
+    runs-on: ubuntu-latest
+    strategy:
+      # This ensures that all three toolchains will run even if one of
+      # them fails. This, for example, prevents a `nightly` failure
+      # from blocking `stable` and `beta` from running.
+      fail-fast: false
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          components: clippy, rustfmt
+          toolchain: ${{ matrix.toolchain }}
+      - run: cargo build --verbose
+      - run: cargo test --verbose
+      - run: cargo clippy --all-targets
+      - run: cargo install rustfmt-unstable
+      # Currently (v1.x) rustfmt accepts unstable features as
+      # arguments only, this wrapper reads the file and passes
+      # them as arguments. Rustfmt v2.x won't have this limitation
+      # anymore and then this wrapper can be removed.
+      - run: rustfmt-unstable --config-file rustfmt.toml -- cargo fmt --check -- --config error_on_line_overflow=true
+      - run: cargo install example-runner-cli
+      - run: example-runner-cli --error-on-unconfigured --error-on-unknown --parallel
